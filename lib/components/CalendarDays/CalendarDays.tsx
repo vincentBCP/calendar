@@ -1,8 +1,11 @@
 import { addDays, endOfMonth, format, getDay, startOfMonth } from "date-fns";
 import CalendarDay from "./CalendarDay";
 
-const CalendarDays: React.FC<{ currentDate: Date }> = (props) => {
-  const { currentDate } = props;
+const CalendarDays: React.FC<{
+  currentDate: Date;
+  onDayClick: (date: Date) => void;
+}> = (props) => {
+  const { currentDate, onDayClick } = props;
 
   const renderDays = () => {
     const firstDate = startOfMonth(currentDate);
@@ -28,6 +31,7 @@ const CalendarDays: React.FC<{ currentDate: Date }> = (props) => {
           key={date.toDateString()}
           date={date}
           currentDate={currentDate}
+          onClick={() => onDayClick(date)}
         />
       );
     };

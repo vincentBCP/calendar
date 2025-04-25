@@ -1,8 +1,12 @@
 import clsx from "clsx";
 import { format } from "date-fns";
 
-const CalendarDay: React.FC<{ date: Date; currentDate: Date }> = (props) => {
-  const { date, currentDate } = props;
+const CalendarDay: React.FC<{
+  date: Date;
+  currentDate: Date;
+  onClick: () => void;
+}> = (props) => {
+  const { date, currentDate, onClick } = props;
 
   const inTheCurrentMonth = format(date, "MM") === format(currentDate, "MM");
   const today = format(date, "MM-dd") === format(new Date(), "MM-dd");
@@ -20,6 +24,7 @@ const CalendarDay: React.FC<{ date: Date; currentDate: Date }> = (props) => {
           "[&:nth-of-type(36)]:border-l": true,
         }
       )}
+      onClick={onClick}
     >
       <span
         className={clsx(
