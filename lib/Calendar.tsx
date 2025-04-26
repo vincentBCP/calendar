@@ -4,8 +4,16 @@ import WeekDays from "./components/WeekDays";
 import CalendarDays from "./components/CalendarDays/CalendarDays";
 import { format, startOfMonth } from "date-fns";
 import { Dialog } from "@vincentbcp/components-library";
+import EventForm from "./components/EventForm";
+import { ICalendarEvent } from "./interfaces/ICalendarEvent";
 
-export const Calendar: React.FC<{ onBack?: () => void }> = (props) => {
+export const Calendar: React.FC<{
+  onBack?: () => void;
+  events: ICalendarEvent[];
+  onAddEvent: (event: ICalendarEvent) => Promise<boolean>;
+  onDeleteEvent: (event: ICalendarEvent) => Promise<boolean>;
+  onUpdateEvent: (event: ICalendarEvent) => Promise<boolean>;
+}> = (props) => {
   const { onBack } = props;
 
   const [currentDate, setCurrentDate] = useState(startOfMonth(new Date()));
@@ -30,7 +38,7 @@ export const Calendar: React.FC<{ onBack?: () => void }> = (props) => {
         open={!!selectedDate}
         onClose={() => setSelectedDate(undefined)}
       >
-        <h1>Add event here.</h1>
+        <EventForm date={selectedDate || new Date()} />
       </Dialog>
     </>
   );
