@@ -27,13 +27,13 @@ const Navigation: React.FC<{
       </button>
       <Icon
         icon="chevron-left"
-        className="mr-4 hover:!outline-6"
+        className="mr-4 md:hover:!outline-6"
         feedbackOnHover
         onClick={() => onChange(addMonths(currentDate, -1))}
       />
       <Icon
         icon="chevron-right"
-        className="mr-auto hover:!outline-6"
+        className="mr-auto md:hover:!outline-6"
         feedbackOnHover
         onClick={() => onChange(addMonths(currentDate, 1))}
       />

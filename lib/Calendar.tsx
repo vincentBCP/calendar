@@ -13,7 +13,7 @@ export const Calendar: React.FC<{ onBack?: () => void }> = (props) => {
 
   return (
     <>
-      <div>
+      <div className="w-full h-full">
         <Navigation
           currentDate={currentDate}
           onChange={setCurrentDate}
