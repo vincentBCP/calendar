@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import Navigation from "./components/Navigation";
 import WeekDays from "./components/WeekDays";
 import CalendarDays from "./components/CalendarDays/CalendarDays";
-import { format } from "date-fns";
+import { addMonths, format } from "date-fns";
 import { Dialog } from "@vincentbcp/components-library";
 import EventForm from "./components/EventForm";
 import { ICalendarEvent } from "./interfaces/ICalendarEvent";
 import useCalendar from "./hooks/useCalendar";
+import { useSwipeable } from "react-swipeable";
 
 export const Calendar: React.FC<{
   onBack?: () => void;
@@ -21,13 +22,18 @@ export const Calendar: React.FC<{
 
   const { currentDate, setCurrentDate, getHolidays } = useCalendar();
 
+  const handlers = useSwipeable({
+    onSwipedLeft: () => setCurrentDate(addMonths(currentDate, 1)),
+    onSwipedRight: () => setCurrentDate(addMonths(currentDate, -1)),
+  });
+
   useEffect(() => {
     getHolidays();
   }, []);
 
   return (
     <>
-      <div className="w-full h-full">
+      <div className="w-full h-full" {...handlers}>
         <Navigation
           currentDate={currentDate}
           onChange={setCurrentDate}

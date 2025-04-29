@@ -1,6 +1,6 @@
 {
   "name": "@vincentbcp/calendar",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "type": "module",
   "main": "dist/main.js",
   "types": "dist/main.d.ts",
@@ -21,6 +21,7 @@
     "date-fns": "^4.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-swipeable": "^7.0.2",
     "tailwindcss": "^4.1.4",
     "vite-plugin-dts": "^4.5.3",
     "vite-plugin-lib-inject-css": "^2.2.2",
