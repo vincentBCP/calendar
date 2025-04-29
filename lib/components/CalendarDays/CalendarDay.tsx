@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { format } from "date-fns";
-import useCalendarStore from "../../../src/store/calendar.store";
+import useCalendarStore from "../../store/calendar.store";
 import { useMemo } from "react";
 
 const CalendarDay: React.FC<{

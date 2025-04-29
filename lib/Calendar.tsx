@@ -6,7 +6,7 @@ import { format } from "date-fns";
 import { Dialog } from "@vincentbcp/components-library";
 import EventForm from "./components/EventForm";
 import { ICalendarEvent } from "./interfaces/ICalendarEvent";
-import useCalendar from "../src/hooks/useCalendar";
+import useCalendar from "./hooks/useCalendar";
 
 export const Calendar: React.FC<{
   onBack?: () => void;
