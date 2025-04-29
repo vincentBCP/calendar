@@ -1,6 +1,6 @@
 {
   "name": "@vincentbcp/calendar",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "type": "module",
   "main": "dist/main.js",
   "types": "dist/main.d.ts",
@@ -16,11 +16,12 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.1.4",
     "@types/node": "^22.15.2",
-    "@vincentbcp/components-library": "^1.1.9",
+    "@vincentbcp/components-library": "^1.2.2",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-responsive": "^10.0.1",
     "react-swipeable": "^7.0.2",
     "tailwindcss": "^4.1.4",
     "vite-plugin-dts": "^4.5.3",

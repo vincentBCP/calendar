@@ -2,13 +2,16 @@ import clsx from "clsx";
 import { format } from "date-fns";
 import useCalendarStore from "../../store/calendar.store";
 import { useMemo } from "react";
+import Holiday from "./Holiday";
+import { IHoliday } from "../../interfaces/IHoliday";
 
 const CalendarDay: React.FC<{
   date: Date;
   currentDate: Date;
   onClick: () => void;
+  onHolidayClick: (holiday: IHoliday) => void;
 }> = (props) => {
-  const { date, currentDate, onClick } = props;
+  const { date, currentDate, onClick, onHolidayClick } = props;
   const { holidays } = useCalendarStore();
 
   const inTheCurrentMonth = format(date, "MM") === format(currentDate, "MM");
@@ -47,9 +50,7 @@ const CalendarDay: React.FC<{
         </span>
       </div>
       {holiday && (
-        <p className="bg-green-700 text-white rounded-sm md:!rounded-md text-xs md:!text-sm px-1 md:!px-2 overflow-hidden whitespace-nowrap">
-          {holiday.name}
-        </p>
+        <Holiday holiday={holiday} onClick={() => onHolidayClick(holiday)} />
       )}
     </div>
   );

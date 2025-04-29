@@ -1,10 +1,11 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import { IHoliday } from "../interfaces/IHoliday";
 
 interface State {
   year: string;
-  holidays: any[];
-  setHolidays: (holidays: any[]) => void;
+  holidays: IHoliday[];
+  setHolidays: (holidays: IHoliday[]) => void;
 }
 
 const useCalendarStore = create<State>()(
@@ -12,7 +13,7 @@ const useCalendarStore = create<State>()(
     (set) => ({
       year: "",
       holidays: [],
-      setHolidays: (holidays: any[]) => {
+      setHolidays: (holidays: IHoliday[]) => {
         set({ holidays, year: new Date().getFullYear().toString() });
       },
     }),

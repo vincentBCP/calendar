@@ -10,7 +10,7 @@ const Navigation: React.FC<{
   const { currentDate, onChange, onBack } = props;
 
   return (
-    <div className="select-none p-4 flex items-center border-b border-zinc-200">
+    <div className="select-none p-4 flex items-center border-b border-zinc-200 bg-gray-100">
       {onBack && (
         <Icon
           icon="arrow-left2"
@@ -20,7 +20,7 @@ const Navigation: React.FC<{
         />
       )}
       <button
-        className="rounded border border-zinc-200 bg-white px-4 py-2 uppercase text-xs mr-6 cursor-pointer hover:bg-zinc-100 duration-300"
+        className="rounded-full border border-black px-4 py-2 uppercase text-xs mr-6 cursor-pointer md:hover:bg-gray-200 duration-300"
         onClick={() => onChange(startOfMonth(new Date()))}
       >
         today
