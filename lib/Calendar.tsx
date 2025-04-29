@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navigation from "./components/Navigation";
 import WeekDays from "./components/WeekDays";
 import CalendarDays from "./components/CalendarDays/CalendarDays";
-import { format, startOfMonth } from "date-fns";
+import { format } from "date-fns";
 import { Dialog } from "@vincentbcp/components-library";
 import EventForm from "./components/EventForm";
 import { ICalendarEvent } from "./interfaces/ICalendarEvent";
+import useCalendar from "../src/hooks/useCalendar";
 
 export const Calendar: React.FC<{
   onBack?: () => void;
@@ -16,8 +17,13 @@ export const Calendar: React.FC<{
 }> = (props) => {
   const { onBack } = props;
 
-  const [currentDate, setCurrentDate] = useState(startOfMonth(new Date()));
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+
+  const { currentDate, setCurrentDate, getHolidays } = useCalendar();
+
+  useEffect(() => {
+    getHolidays();
+  }, []);
 
   return (
     <>
