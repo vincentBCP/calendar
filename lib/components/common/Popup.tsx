@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
 const POPUP_WIDTH = 300;
-const POPUP_WIDTH_MOBILE = 220;
+const POPUP_WIDTH_MOBILE = (window.innerWidth / 7) * 3.8;
 const POPUP_HEIGHT = 180;
 const POPUP_HEIGHT_MOBILE = 120;
 
@@ -43,7 +43,9 @@ const Popup: React.FC<{
         }
 
         if (x + width > window.innerWidth) {
-          x = mobile ? rect.left - width + rect.width : rect.left - width - 8;
+          x = mobile
+            ? rect.left - width + rect.width + 4
+            : rect.left - width - 8;
           dir = "left";
         }
 
@@ -64,7 +66,7 @@ const Popup: React.FC<{
 
   return (
     <div
-      className="duration-300 popup flex flex-col z-10 fixed bg-gray-100 rounded-xl p-4 md:!p-6 w-[220px] md:!w-[300px] shadow-lg text-black"
+      className={`duration-300 popup flex flex-col z-10 fixed bg-gray-100 rounded-xl p-4 md:!p-6 w-[calc((100%/7)*3.7)] md:!w-[300px] shadow-lg text-black`}
       style={{
         top: loc.y,
         left: loc.x,
@@ -74,7 +76,7 @@ const Popup: React.FC<{
       <Icon
         icon="close"
         color="black"
-        className="self-end mb-4 cursor-pointer"
+        className="self-end mb-2 md:!mb-4 cursor-pointer"
         onClick={() => {
           setLoc(undefined);
           onClose();
