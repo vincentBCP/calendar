@@ -5,7 +5,7 @@ import { useMediaQuery } from "react-responsive";
 const POPUP_WIDTH = 300;
 const POPUP_WIDTH_MOBILE = (window.innerWidth / 7) * 3.8;
 const POPUP_HEIGHT = 180;
-const POPUP_HEIGHT_MOBILE = 120;
+const POPUP_HEIGHT_MOBILE = 110;
 
 const Popup: React.FC<{
   anchorElId: string;
