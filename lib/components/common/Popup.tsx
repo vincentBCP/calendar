@@ -1,11 +1,9 @@
 import { Icon, useClickAway } from "@vincentbcp/components-library";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
 const POPUP_WIDTH = 300;
 const POPUP_WIDTH_MOBILE = (window.innerWidth / 7) * 3.8;
-const POPUP_HEIGHT = 180;
-const POPUP_HEIGHT_MOBILE = 150;
 
 const Popup: React.FC<{
   anchorElId: string;
@@ -19,6 +17,9 @@ const Popup: React.FC<{
   const [loc, setLoc] = useState<
     { x: number; y: number; dir: "left" | "right" | "top" } | undefined
   >();
+  const [duration, setDuration] = useState("0");
+
+  const elemRef = useRef<HTMLDivElement>(null);
 
   useClickAway([anchorElId, "popup"], () => {
     setLoc(undefined);
@@ -27,7 +28,10 @@ const Popup: React.FC<{
 
   useEffect(() => {
     if (open) {
-      const checkLoc = (width: number, height: number, mobile?: boolean) => {
+      const checkLoc = () => {
+        const height = elemRef.current?.getBoundingClientRect().height || 0;
+        const width = mobile ? POPUP_WIDTH_MOBILE : POPUP_WIDTH;
+
         const anchorEl = document.getElementById(anchorElId);
         if (!anchorEl) return;
 
@@ -37,7 +41,7 @@ const Popup: React.FC<{
         let dir: any = "right";
 
         if (y + height > window.innerHeight) {
-          y = mobile ? rect.top - height - 24 : rect.top - height;
+          y = mobile ? rect.top - height - 4 : rect.top - height - 8;
           x = rect.left;
           dir = "top";
         }
@@ -50,26 +54,27 @@ const Popup: React.FC<{
         }
 
         setLoc({ x, y, dir });
+        setTimeout(() => setDuration("300ms"), 10);
       };
 
-      if (mobile) {
-        checkLoc(POPUP_WIDTH_MOBILE, POPUP_HEIGHT_MOBILE, true);
-      } else {
-        checkLoc(POPUP_WIDTH, POPUP_HEIGHT);
-      }
+      setTimeout(() => {
+        checkLoc();
+      }, 10);
     } else {
       setLoc(undefined);
+      setDuration("0");
     }
   }, [open, mobile, anchorElId]);
 
-  if (!loc) return null;
-
   return (
     <div
-      className={`duration-300 popup flex flex-col z-10 fixed bg-gray-100 rounded-xl p-4 md:!p-6 w-[calc((100%/7)*3.7)] md:!w-[300px] shadow-lg text-black`}
+      ref={elemRef}
+      className={`popup flex flex-col z-10 fixed bg-gray-100 rounded-xl p-4 md:!p-6 w-[calc((100%/7)*3.7)] md:!w-[300px] shadow-lg text-black`}
       style={{
-        top: loc.y,
-        left: loc.x,
+        transitionDuration: duration,
+        visibility: loc?.y ? "visible" : "hidden",
+        top: loc?.y || 0,
+        left: loc?.x || 0,
       }}
       onClick={(ev) => ev.stopPropagation()}
     >
