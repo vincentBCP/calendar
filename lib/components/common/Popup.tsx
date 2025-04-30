@@ -2,9 +2,6 @@ import { Icon, useClickAway } from "@vincentbcp/components-library";
 import { useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
-const POPUP_WIDTH = 300;
-const POPUP_WIDTH_MOBILE = (window.innerWidth / 7) * 3.8;
-
 const Popup: React.FC<{
   anchorElId: string;
   open: boolean;
@@ -30,7 +27,7 @@ const Popup: React.FC<{
     if (open) {
       const checkLoc = () => {
         const height = elemRef.current?.getBoundingClientRect().height || 0;
-        const width = mobile ? POPUP_WIDTH_MOBILE : POPUP_WIDTH;
+        const width = elemRef.current?.getBoundingClientRect().width || 0;
 
         const anchorEl = document.getElementById(anchorElId);
         if (!anchorEl) return;
