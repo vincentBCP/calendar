@@ -6,6 +6,8 @@ interface State {
   year: string;
   holidays: IHoliday[];
   setHolidays: (holidays: IHoliday[]) => void;
+  selectedHoliday: IHoliday | null;
+  setSelectedHoliday: (holiday: IHoliday | null) => void;
 }
 
 const useCalendarStore = create<State>()(
@@ -16,6 +18,8 @@ const useCalendarStore = create<State>()(
       setHolidays: (holidays: IHoliday[]) => {
         set({ holidays, year: new Date().getFullYear().toString() });
       },
+      selectedHoliday: null,
+      setSelectedHoliday: (selectedHoliday) => set({ selectedHoliday }),
     }),
     {
       name: "calendar-storage",

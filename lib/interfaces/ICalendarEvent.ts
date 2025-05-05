@@ -3,4 +3,6 @@ export interface ICalendarEvent {
   title: string;
   date: string;
   time: string;
+  textColor: string;
+  bgColor: string;
 }

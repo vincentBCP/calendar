@@ -1,13 +1,10 @@
 import { addDays, endOfMonth, format, getDay, startOfMonth } from "date-fns";
 import CalendarDay from "./CalendarDay";
-import { IHoliday } from "../../interfaces/IHoliday";
 
 const CalendarDays: React.FC<{
   currentDate: Date;
-  onDayClick: (date: Date) => void;
-  onHolidayClick: (holiday: IHoliday) => void;
 }> = (props) => {
-  const { currentDate, onDayClick, onHolidayClick } = props;
+  const { currentDate } = props;
 
   const renderDays = () => {
     const firstDate = startOfMonth(currentDate);
@@ -33,8 +30,6 @@ const CalendarDays: React.FC<{
           key={date.toDateString()}
           date={date}
           currentDate={currentDate}
-          onClick={() => onDayClick(date)}
-          onHolidayClick={onHolidayClick}
         />
       );
     };

@@ -2,17 +2,16 @@ import clsx from "clsx";
 import { format } from "date-fns";
 import useCalendarStore from "../../store/calendar.store";
 import { useMemo } from "react";
-import Holiday from "./Holiday";
-import { IHoliday } from "../../interfaces/IHoliday";
+import Event from "./Event";
+import useEventStore from "../../store/event.store";
 
 const CalendarDay: React.FC<{
   date: Date;
   currentDate: Date;
-  onClick: () => void;
-  onHolidayClick: (holiday: IHoliday) => void;
 }> = (props) => {
-  const { date, currentDate, onClick, onHolidayClick } = props;
-  const { holidays } = useCalendarStore();
+  const { date, currentDate } = props;
+  const { holidays, setSelectedHoliday } = useCalendarStore();
+  const { events, setSelectedEvent } = useEventStore();
 
   const inTheCurrentMonth = format(date, "MM") === format(currentDate, "MM");
   const today = format(date, "MM-dd") === format(new Date(), "MM-dd");
@@ -20,6 +19,10 @@ const CalendarDay: React.FC<{
   const holiday = useMemo(() => {
     return holidays.find((hol) => hol.date === format(date, "yyyy-MM-dd"));
   }, [holidays]);
+
+  const dayEvents = useMemo(() => {
+    return events.filter((event) => event.date === format(date, "yyyy-MM-dd"));
+  }, [events, date]);
 
   return (
     <div
@@ -34,7 +37,16 @@ const CalendarDay: React.FC<{
           "[&:nth-of-type(36)]:border-l": true,
         }
       )}
-      onClick={onClick}
+      onClick={() =>
+        setSelectedEvent({
+          id: "",
+          title: "",
+          date: format(date, "yyyy-MM-dd"),
+          time: "",
+          bgColor: "#0000ff",
+          textColor: "#ffffff",
+        })
+      }
     >
       <div className="flex justify-center">
         <span
@@ -50,8 +62,26 @@ const CalendarDay: React.FC<{
         </span>
       </div>
       {holiday && (
-        <Holiday holiday={holiday} onClick={() => onHolidayClick(holiday)} />
+        <Event
+          id={`holiday_${holiday.date}`}
+          title={holiday.name}
+          bgColor="#008236"
+          textColor="#ffffff"
+          onClick={() => setSelectedHoliday(holiday)}
+        />
       )}
+      {dayEvents.map((event) => (
+        <Event
+          id={`event_${event.id}`}
+          key={`event_${event.id}`}
+          title={`${format(new Date(`1990-01-01 ${event.time}`), "h:mmaaa")} ${
+            event.title
+          }`}
+          bgColor={event.bgColor}
+          textColor={event.textColor}
+          onClick={() => setSelectedEvent(event)}
+        />
+      ))}
     </div>
   );
 };
