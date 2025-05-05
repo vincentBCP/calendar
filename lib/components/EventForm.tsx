@@ -10,7 +10,7 @@ const EventForm: React.FC<{ date: Date }> = (props) => {
   const { date } = props;
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 p-6">
       <Textfield name="Title" />
       <div className="grid grid-cols-2 gap-4">
         <DateInput name="Date" value={format(date, "yyyy-MM-dd")} disabled />
