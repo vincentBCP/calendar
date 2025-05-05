@@ -3,8 +3,7 @@ import Navigation from "./components/Navigation";
 import WeekDays from "./components/WeekDays";
 import CalendarDays from "./components/CalendarDays/CalendarDays";
 import { addMonths, format } from "date-fns";
-import { Dialog, Icon } from "@vincentbcp/components-library";
-import EventForm from "./components/EventForm";
+import { Icon } from "@vincentbcp/components-library";
 import { ICalendarEvent } from "./interfaces/ICalendarEvent";
 import useCalendar from "./hooks/useCalendar";
 import { useSwipeable } from "react-swipeable";
@@ -12,6 +11,7 @@ import Popup from "./components/common/Popup";
 import random from "random-string-generator";
 import useCalendarStore from "./store/calendar.store";
 import { cloneDeep } from "lodash";
+import EventDialog from "./components/EventDialog";
 
 export const Calendar: React.FC<{
   onBack?: () => void;
@@ -60,18 +60,17 @@ export const Calendar: React.FC<{
         <WeekDays />
         <CalendarDays currentDate={currentDate} />
       </div>
-      <Dialog
-        title={format(
-          newEvent?.date || selectedEvent?.date || new Date(),
-          "MMM dd, yyyy EEE"
-        )}
-        open={!!newEvent || !!selectedEvent}
-        onClose={() => {
-          setNewEvent(null);
-          setSelectedEvent(null);
-        }}
-      >
-        <EventForm
+      {(!!newEvent || !!selectedEvent) && (
+        <EventDialog
+          title={format(
+            newEvent?.date || selectedEvent?.date || new Date(),
+            "MMM dd, yyyy EEE"
+          )}
+          open
+          onClose={() => {
+            setNewEvent(null);
+            setSelectedEvent(null);
+          }}
           event={(newEvent || selectedEvent) as any}
           onChange={newEvent ? setNewEvent : setSelectedEvent}
           onSubmit={(event) => {
@@ -92,67 +91,76 @@ export const Calendar: React.FC<{
             setSelectedEvent(null);
           }}
         />
-      </Dialog>
-      {selectedHoliday && (
-        <Popup
-          id="holiday_popup"
-          open
-          onClose={() => setSelectedHoliday(null)}
-          anchorElId={`holiday_${selectedHoliday.date}`}
-        >
-          <div className="flex gap-4 md:!gap-6 items-start mb-6">
-            <div className="w-4 h-4 mt-2 rounded-sm bg-green-700 shrink-0" />
-            <div>
-              <p className="text-sm md:!text-xl">{selectedHoliday.name}</p>
-              <p className="font-light text-xs md:!text-sm">
-                {format(new Date(selectedHoliday.date), "EEEE, MMM dd")}
-              </p>
-            </div>
-          </div>
-          <div className="flex gap-4 md:!gap-6 items-center">
-            <Icon icon="menu" />
-            <p className="font-light text-xs md:!text-sm">
-              {selectedHoliday.type || "Public Holiday"}
-            </p>
-          </div>
-        </Popup>
       )}
-      {viewingEvent && (
+      {(selectedHoliday || viewingEvent) && (
         <Popup
-          id="event_popup"
+          id="calendar_popup"
           open
-          onClose={() => setViewingEvent(null)}
-          anchorElId={`event_${viewingEvent.id}`}
-          actions={
-            <Icon
-              icon="pencil"
-              color="black"
-              className="cursor-pointer"
-              onClick={() => {
-                setSelectedEvent({ ...viewingEvent });
-                setViewingEvent(null);
-              }}
-            />
-          }
+          {...(selectedHoliday
+            ? {
+                onClose: () => setSelectedHoliday(null),
+                anchorElId: `holiday_${selectedHoliday.date}`,
+              }
+            : {
+                onClose: () => setViewingEvent(null),
+                anchorElId: `event_${viewingEvent?.id}`,
+                actions: (
+                  <Icon
+                    icon="pencil"
+                    color="black"
+                    className="cursor-pointer"
+                    onClick={() => {
+                      setSelectedEvent({ ...(viewingEvent as any) });
+                      setViewingEvent(null);
+                    }}
+                  />
+                ),
+              })}
         >
-          <div className="flex gap-4 md:!gap-6 items-start mb-6">
-            <div
-              className="w-4 h-4 mt-2 rounded-sm shrink-0"
-              style={{ backgroundColor: viewingEvent?.bgColor }}
-            />
-            <div>
-              <p className="text-sm md:!text-xl">{viewingEvent.title}</p>
-              <p className="font-light text-xs md:!text-sm">
-                {format(new Date(viewingEvent.date), "EEEE, MMM dd")}
-              </p>
-            </div>
-          </div>
-          <div className="flex gap-4 md:!gap-6 items-center">
-            <Icon icon="clock" />
-            <p className="font-light text-xs md:!text-sm">
-              {format(new Date(`1990-01-01 ${viewingEvent.time}`), "h:mmaaa")}
-            </p>
-          </div>
+          {selectedHoliday && (
+            <>
+              <div className="flex gap-4 md:!gap-6 items-start mb-6">
+                <div className="w-4 h-4 mt-2 rounded-sm bg-green-700 shrink-0" />
+                <div>
+                  <p className="text-sm md:!text-xl">{selectedHoliday.name}</p>
+                  <p className="font-light text-xs md:!text-sm">
+                    {format(new Date(selectedHoliday.date), "EEEE, MMM dd")}
+                  </p>
+                </div>
+              </div>
+              <div className="flex gap-4 md:!gap-6 items-center">
+                <Icon icon="menu" />
+                <p className="font-light text-xs md:!text-sm">
+                  {selectedHoliday.type || "Public Holiday"}
+                </p>
+              </div>
+            </>
+          )}
+          {viewingEvent && (
+            <>
+              <div className="flex gap-4 md:!gap-6 items-start mb-6">
+                <div
+                  className="w-4 h-4 mt-2 rounded-sm shrink-0"
+                  style={{ backgroundColor: viewingEvent?.bgColor }}
+                />
+                <div>
+                  <p className="text-sm md:!text-xl">{viewingEvent.title}</p>
+                  <p className="font-light text-xs md:!text-sm">
+                    {format(new Date(viewingEvent.date), "EEEE, MMM dd")}
+                  </p>
+                </div>
+              </div>
+              <div className="flex gap-4 md:!gap-6 items-center">
+                <Icon icon="clock" />
+                <p className="font-light text-xs md:!text-sm">
+                  {format(
+                    new Date(`1990-01-01 ${viewingEvent.time}`),
+                    "h:mmaaa"
+                  )}
+                </p>
+              </div>
+            </>
+          )}
         </Popup>
       )}
     </>

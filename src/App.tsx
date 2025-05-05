@@ -25,7 +25,7 @@ const App: React.FC = () => {
     {
       id: "3",
       title: "3 Lorem ipsum dolor sit amet",
-      date: format(new Date(), "yyyy-MM-dd"),
+      date: "2025-05-10",
       time: "08:00",
       bgColor: "#0000ff",
       textColor: "#ffffff",

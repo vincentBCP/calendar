@@ -35,30 +35,28 @@ const Popup: React.FC<{
         if (!anchorEl) return;
 
         const rect = anchorEl.getBoundingClientRect();
-        let x = mobile ? rect.left : rect.left + rect.width + 8;
+        let x = mobile ? rect.left : rect.left + rect.width + 4;
         let y = mobile ? rect.top + 28 : rect.top;
         let dir: any = "right";
 
         if (y + height > window.innerHeight) {
-          y = mobile ? rect.top - height - 4 : rect.top - height - 8;
+          y = mobile ? rect.top - height - 4 : rect.top - height - 4;
           x = rect.left;
           dir = "top";
         }
 
         if (x + width > window.innerWidth) {
-          x = mobile
-            ? rect.left - width + rect.width + 4
-            : rect.left - width - 8;
+          x = mobile ? rect.left - width + rect.width : rect.left - width - 4;
           dir = "left";
         }
 
         setLoc({ x, y, dir });
-        setTimeout(() => setDuration("300ms"), 10);
+        setTimeout(() => setDuration("300ms"), 100);
       };
 
       setTimeout(() => {
         checkLoc();
-      }, 50);
+      }, 10);
     } else {
       setLoc(undefined);
       setDuration("0");

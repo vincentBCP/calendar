@@ -66,7 +66,10 @@ const CalendarDay: React.FC<{
           title={holiday.name}
           bgColor="#008236"
           textColor="#ffffff"
-          onClick={() => setSelectedHoliday(holiday)}
+          onClick={() => {
+            setViewingEvent(null);
+            setSelectedHoliday(holiday);
+          }}
         />
       )}
       {dayEvents.map((event) => (
@@ -78,7 +81,10 @@ const CalendarDay: React.FC<{
           }`}
           bgColor={event.bgColor}
           textColor={event.textColor}
-          onClick={() => setViewingEvent(event)}
+          onClick={() => {
+            setSelectedHoliday(null);
+            setViewingEvent(event);
+          }}
         />
       ))}
     </div>

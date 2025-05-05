@@ -1,5 +1,4 @@
 import clsx from "clsx";
-import useCalendarStore from "../../store/calendar.store";
 
 const Event: React.FC<{
   id: string;
@@ -9,7 +8,6 @@ const Event: React.FC<{
   onClick: () => void;
 }> = (props) => {
   const { id, title, bgColor, textColor, onClick } = props;
-  const { setSelectedHoliday, setViewingEvent } = useCalendarStore();
 
   return (
     <p
@@ -23,8 +21,6 @@ const Event: React.FC<{
       }}
       onClick={(ev) => {
         ev.stopPropagation();
-        setViewingEvent(null);
-        setSelectedHoliday(null);
         onClick();
       }}
     >
