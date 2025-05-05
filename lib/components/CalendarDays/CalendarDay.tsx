@@ -3,15 +3,14 @@ import { format } from "date-fns";
 import useCalendarStore from "../../store/calendar.store";
 import { useMemo } from "react";
 import Event from "./Event";
-import useEventStore from "../../store/event.store";
 
 const CalendarDay: React.FC<{
   date: Date;
   currentDate: Date;
 }> = (props) => {
   const { date, currentDate } = props;
-  const { holidays, setSelectedHoliday } = useCalendarStore();
-  const { events, setSelectedEvent } = useEventStore();
+  const { holidays, setSelectedHoliday, events, setNewEvent, setViewingEvent } =
+    useCalendarStore();
 
   const inTheCurrentMonth = format(date, "MM") === format(currentDate, "MM");
   const today = format(date, "MM-dd") === format(new Date(), "MM-dd");
@@ -38,8 +37,8 @@ const CalendarDay: React.FC<{
         }
       )}
       onClick={() =>
-        setSelectedEvent({
-          id: "",
+        setNewEvent({
+          id: "new_event",
           title: "",
           date: format(date, "yyyy-MM-dd"),
           time: "",
@@ -79,7 +78,7 @@ const CalendarDay: React.FC<{
           }`}
           bgColor={event.bgColor}
           textColor={event.textColor}
-          onClick={() => setSelectedEvent(event)}
+          onClick={() => setViewingEvent(event)}
         />
       ))}
     </div>

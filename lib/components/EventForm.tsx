@@ -13,9 +13,8 @@ const EventForm: React.FC<{
   onChange: (event: ICalendarEvent) => void;
   onSubmit: (event: ICalendarEvent) => Promise<boolean>;
   onDelete: (event: ICalendarEvent) => void;
-  onClose: () => void;
 }> = (props) => {
-  const { event, onChange, onSubmit, onClose, onDelete } = props;
+  const { event, onChange, onSubmit, onDelete } = props;
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = () => {
@@ -32,9 +31,7 @@ const EventForm: React.FC<{
 
     setLoading(true);
 
-    onSubmit(event)
-      .then(() => onClose())
-      .finally(() => setLoading(false));
+    onSubmit(event);
   };
 
   return (
@@ -66,9 +63,9 @@ const EventForm: React.FC<{
       </div>
       <div className="flex gap-4">
         <Button onClick={handleSubmit} loading={loading} disabled={loading}>
-          {event.id ? "Update" : "Add"}
+          {event.id !== "new_event" ? "Update" : "Add"}
         </Button>
-        {event.id && (
+        {event.id !== "new_event" && (
           <Button
             className="!bg-transparent !border-solid !outline-solid !outline-offset-[-2px] !outline-red-500 !text-red-500 hover:!bg-red-300"
             onClick={() => {
@@ -77,7 +74,6 @@ const EventForm: React.FC<{
               if (!c) return;
 
               onDelete(event);
-              onClose();
             }}
           >
             Delete

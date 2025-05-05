@@ -3,12 +3,14 @@ import { useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
 const Popup: React.FC<{
+  id: string;
   anchorElId: string;
   open: boolean;
   onClose: () => void;
   children: React.ReactNode | React.ReactNode[];
+  actions?: React.ReactNode;
 }> = (props) => {
-  const { anchorElId, open, onClose, children } = props;
+  const { id, anchorElId, open, onClose, children, actions } = props;
 
   const mobile = useMediaQuery({ query: "(max-width: 600px)" });
   const [loc, setLoc] = useState<
@@ -18,7 +20,7 @@ const Popup: React.FC<{
 
   const elemRef = useRef<HTMLDivElement>(null);
 
-  useClickAway([anchorElId, "popup"], () => {
+  useClickAway([anchorElId, id], () => {
     setLoc(undefined);
     onClose();
   });
@@ -34,7 +36,7 @@ const Popup: React.FC<{
 
         const rect = anchorEl.getBoundingClientRect();
         let x = mobile ? rect.left : rect.left + rect.width + 8;
-        let y = mobile ? rect.top + 20 : rect.top;
+        let y = mobile ? rect.top + 28 : rect.top;
         let dir: any = "right";
 
         if (y + height > window.innerHeight) {
@@ -56,7 +58,7 @@ const Popup: React.FC<{
 
       setTimeout(() => {
         checkLoc();
-      }, 10);
+      }, 50);
     } else {
       setLoc(undefined);
       setDuration("0");
@@ -66,7 +68,7 @@ const Popup: React.FC<{
   return (
     <div
       ref={elemRef}
-      className={`popup flex flex-col z-10 fixed bg-gray-100 rounded-xl p-4 md:!p-6 w-[calc((100%/7)*3.7)] md:!w-[300px] shadow-lg text-black`}
+      className={`${id} flex flex-col z-10 fixed bg-gray-100 rounded-xl p-4 md:!p-6 w-[calc((100%/7)*3.7)] md:!w-[300px] shadow-lg text-black`}
       style={{
         transitionDuration: duration,
         visibility: loc?.y ? "visible" : "hidden",
@@ -75,15 +77,18 @@ const Popup: React.FC<{
       }}
       onClick={(ev) => ev.stopPropagation()}
     >
-      <Icon
-        icon="close"
-        color="black"
-        className="self-end mb-2 md:!mb-4 cursor-pointer"
-        onClick={() => {
-          setLoc(undefined);
-          onClose();
-        }}
-      />
+      <div className="flex items-center justify-end gap-4 mb-4">
+        {actions && actions}
+        <Icon
+          icon="close"
+          color="black"
+          className="cursor-pointer"
+          onClick={() => {
+            setLoc(undefined);
+            onClose();
+          }}
+        />
+      </div>
       {children}
     </div>
   );

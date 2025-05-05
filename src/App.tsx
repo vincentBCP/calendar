@@ -2,12 +2,13 @@ import { useState } from "react";
 import { Calendar } from "../lib/main";
 import { ICalendarEvent } from "../lib/interfaces/ICalendarEvent";
 import { format } from "date-fns";
+import { cloneDeep } from "lodash";
 
 const App: React.FC = () => {
   const [events, setEvents] = useState<ICalendarEvent[]>([
     {
       id: "1",
-      title: "Lorem ipsum dolor sit amet",
+      title: "1 Lorem ipsum dolor sit amet",
       date: format(new Date(), "yyyy-MM-dd"),
       time: "08:00",
       bgColor: "#0000ff",
@@ -15,7 +16,7 @@ const App: React.FC = () => {
     },
     {
       id: "2",
-      title: "Lorem ipsum dolor sit amet",
+      title: "2 Lorem ipsum dolor sit amet",
       date: format(new Date(), "yyyy-MM-dd"),
       time: "08:00",
       bgColor: "#0000ff",
@@ -23,7 +24,7 @@ const App: React.FC = () => {
     },
     {
       id: "3",
-      title: "Lorem ipsum dolor sit amet",
+      title: "3 Lorem ipsum dolor sit amet",
       date: format(new Date(), "yyyy-MM-dd"),
       time: "08:00",
       bgColor: "#0000ff",
@@ -44,7 +45,23 @@ const App: React.FC = () => {
         })
       }
       onDeleteEvent={() => Promise.resolve(true)}
-      onUpdateEvent={() => Promise.resolve(true)}
+      onUpdateEvent={(event) =>
+        new Promise((resolve) => {
+          setTimeout(() => {
+            setEvents((events) => {
+              const index = events.findIndex((e) => e.id === event.id);
+              const updatedEvents = cloneDeep(events);
+
+              if (index === -1) return updatedEvents;
+
+              updatedEvents[index] = cloneDeep(event);
+
+              return updatedEvents;
+            });
+            resolve(true);
+          }, 1000);
+        })
+      }
     />
   );
 };
