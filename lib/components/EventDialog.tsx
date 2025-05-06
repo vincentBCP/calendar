@@ -22,13 +22,7 @@ const EventDialog: React.FC<{
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = () => {
-    if (
-      !event.title ||
-      !event.date ||
-      !event.time ||
-      !event.bgColor ||
-      !event.textColor
-    ) {
+    if (!event.title || !event.date || !event.bgColor || !event.textColor) {
       alert("Invalid event.");
       return;
     }
@@ -74,12 +68,13 @@ const EventDialog: React.FC<{
     >
       <div className="flex flex-col gap-6">
         <Textfield
+          required
           name="Title"
           value={event.title || ""}
           onChange={(value) => onChange({ ...event, title: value })}
         />
         <div className="grid grid-cols-2 gap-4">
-          <DateInput name="Date" value={event.date} disabled />
+          <DateInput required name="Date" value={event.date} disabled />
           <TimeInput
             name="Time"
             value={event.time || ""}
@@ -88,11 +83,13 @@ const EventDialog: React.FC<{
         </div>
         <div className="grid grid-cols-2 gap-4">
           <ColorPicker
+            required
             name="Background"
             value={event.bgColor || ""}
             onChange={(value) => onChange({ ...event, bgColor: value })}
           />
           <ColorPicker
+            required
             name="Text Color"
             value={event.textColor || ""}
             onChange={(value) => onChange({ ...event, textColor: value })}

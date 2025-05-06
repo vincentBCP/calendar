@@ -76,9 +76,13 @@ const CalendarDay: React.FC<{
         <Event
           id={`event_${event.id}`}
           key={`event_${event.id}`}
-          title={`${format(new Date(`1990-01-01 ${event.time}`), "h:mmaaa")} ${
-            event.title
-          }`}
+          title={
+            event.time
+              ? `${format(new Date(`1990-01-01 ${event.time}`), "h:mmaaa")} ${
+                  event.title
+                }`
+              : event.title
+          }
           bgColor={event.bgColor}
           textColor={event.textColor}
           onClick={() => {

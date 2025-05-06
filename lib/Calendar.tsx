@@ -150,15 +150,17 @@ export const Calendar: React.FC<{
                   </p>
                 </div>
               </div>
-              <div className="flex gap-4 md:!gap-6 items-center">
-                <Icon icon="clock" />
-                <p className="font-light text-xs md:!text-sm">
-                  {format(
-                    new Date(`1990-01-01 ${viewingEvent.time}`),
-                    "h:mmaaa"
-                  )}
-                </p>
-              </div>
+              {viewingEvent.time && (
+                <div className="flex gap-4 md:!gap-6 items-center">
+                  <Icon icon="clock" />
+                  <p className="font-light text-xs md:!text-sm">
+                    {format(
+                      new Date(`1990-01-01 ${viewingEvent.time}`),
+                      "h:mmaaa"
+                    )}
+                  </p>
+                </div>
+              )}
             </>
           )}
         </Popup>
