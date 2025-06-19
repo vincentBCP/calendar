@@ -72,6 +72,7 @@ const EventDialog: React.FC<{
           name="Title"
           value={event.title || ""}
           onChange={(value) => onChange({ ...event, title: value })}
+          className="w-full"
         />
         <div className="grid grid-cols-2 gap-4">
           <DateInput required name="Date" value={event.date} disabled />

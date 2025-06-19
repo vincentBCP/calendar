@@ -20,7 +20,7 @@ const Popup: React.FC<{
 
   const elemRef = useRef<HTMLDivElement>(null);
 
-  useClickAway([anchorElId, id], () => {
+  useClickAway(open, [anchorElId, id], () => {
     setLoc(undefined);
     onClose();
   });
